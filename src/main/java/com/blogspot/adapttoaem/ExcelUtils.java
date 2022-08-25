@@ -1,7 +1,10 @@
 package com.blogspot.adapttoaem;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Iterator;
 
 import javax.jcr.NodeIterator;
 import javax.jcr.Property;
@@ -17,6 +20,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFHyperlink;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.google.gson.JsonObject;
@@ -93,9 +97,29 @@ public class ExcelUtils {
 
 	}
 	
-	public JsonObject excelToJSON () {
+	public static JsonObject excelToJSON (String fileName) throws IOException {
 		
-		return null;
+		InputStream is = ExcelUtils.class.getClassLoader().getResourceAsStream(fileName);
+		XSSFWorkbook workBook = new XSSFWorkbook (is);
+		XSSFSheet sheet = workBook.getSheetAt(0);
+		
+		Iterator<Row> rowIterator = sheet.iterator();
+		
+		JsonObject jsonObject = new JsonObject();
+		
+		while (rowIterator.hasNext()) {
+            Row row = rowIterator.next();
+            jsonObject.addProperty(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue());            
+/*            
+            Iterator<Cell> cellIterator = row.cellIterator();
+            while (cellIterator.hasNext()) {
+            		Cell cell = cellIterator.next();
+            }
+*/
+		}
+		
+		workBook.close();
+		return jsonObject;
 	}
 
 }
