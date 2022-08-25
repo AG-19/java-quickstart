@@ -96,28 +96,44 @@ public class ExcelUtils {
 		}
 
 	}
-	
-	public static JsonObject excelToJSON (String fileName) throws IOException {
-		
+
+	public static JsonObject excelToJSONI18N (String fileName, int sheetIndex) throws IOException {
+
 		InputStream is = ExcelUtils.class.getClassLoader().getResourceAsStream(fileName);
 		XSSFWorkbook workBook = new XSSFWorkbook (is);
-		XSSFSheet sheet = workBook.getSheetAt(0);
-		
+		XSSFSheet sheet = workBook.getSheetAt(sheetIndex);
+
 		Iterator<Row> rowIterator = sheet.iterator();
-		
+
 		JsonObject jsonObject = new JsonObject();
-		
+
 		while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
-            jsonObject.addProperty(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue());            
-/*            
+			Row row = rowIterator.next();
+			jsonObject.addProperty(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue());            
+		}
+
+		workBook.close();
+		return jsonObject;
+	}
+
+	public static JsonObject excelToJSON (String fileName, int sheetIndex) throws IOException {
+
+		InputStream is = ExcelUtils.class.getClassLoader().getResourceAsStream(fileName);
+		XSSFWorkbook workBook = new XSSFWorkbook (is);
+		XSSFSheet sheet = workBook.getSheetAt(sheetIndex);
+
+		Iterator<Row> rowIterator = sheet.iterator();
+
+		JsonObject jsonObject = new JsonObject();
+
+		while (rowIterator.hasNext()) {
+			Row row = rowIterator.next();
             Iterator<Cell> cellIterator = row.cellIterator();
             while (cellIterator.hasNext()) {
             		Cell cell = cellIterator.next();
             }
-*/
 		}
-		
+
 		workBook.close();
 		return jsonObject;
 	}
