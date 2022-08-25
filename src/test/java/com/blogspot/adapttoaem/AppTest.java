@@ -1,4 +1,4 @@
-package com.assaabloy;
+package com.blogspot.adapttoaem;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

@@ -1,0 +1,12 @@
+# Eclipse
+/target/
+bin/
+.settings/
+
+#Java
+*.class
+
+.classpath
+
+# Eclipse Core
+.project
