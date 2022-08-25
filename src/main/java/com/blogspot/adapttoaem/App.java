@@ -1,4 +1,4 @@
-package com.assaabloy;
+package com.blogspot.adapttoaem;
 
 import java.io.FileOutputStream;
 import java.io.OutputStream;
