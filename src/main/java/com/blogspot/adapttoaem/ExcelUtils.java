@@ -4,7 +4,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.jcr.NodeIterator;
 import javax.jcr.Property;
@@ -29,6 +31,29 @@ public class ExcelUtils {
 
 	public static Workbook createWorkBook () {
 		return new XSSFWorkbook();
+	}
+
+	public static List<String> getExcelCoulmnAsList (String fileName, int sheetIndex, int columnIndex) {
+
+		List<String> list = new ArrayList<String>();
+		try {
+			InputStream is = ExcelUtils.class.getClassLoader().getResourceAsStream(fileName);
+			XSSFWorkbook workBook = new XSSFWorkbook (is);
+			XSSFSheet sheet = workBook.getSheetAt(sheetIndex);
+
+			Iterator<Row> rowIterator = sheet.iterator();
+
+			while (rowIterator.hasNext()) {
+				Row row = rowIterator.next();
+				Cell cell = row.getCell(columnIndex);
+				list.add(cell.getStringCellValue());
+			}
+
+			workBook.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return list;
 	}
 
 	public static void createSheet (Workbook workbook, String sheetName) {
@@ -128,10 +153,10 @@ public class ExcelUtils {
 
 		while (rowIterator.hasNext()) {
 			Row row = rowIterator.next();
-            Iterator<Cell> cellIterator = row.cellIterator();
-            while (cellIterator.hasNext()) {
-            		Cell cell = cellIterator.next();
-            }
+			Iterator<Cell> cellIterator = row.cellIterator();
+			while (cellIterator.hasNext()) {
+				Cell cell = cellIterator.next();
+			}
 		}
 
 		workBook.close();
